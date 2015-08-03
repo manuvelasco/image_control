@@ -1,0 +1,47 @@
+<?php
+/*Implementacion hook_form_alter*/
+function guia_form_alter(&$form, &$form_state, $form_id) {
+    if($form_id=='empresa_node_form'){
+        dpm($form);
+        $field_name = 'field_imagen';
+        $field = field_info_field($field_name);
+        $field['cardinality'] = 20;  // Change to number you want
+// field_update_field() throws an exception on failure
+        try {
+            field_update_field($field);
+        }
+        catch (Exception $e) {
+            drupal_set_message(t('Could not update field.'), 'error');
+        }        
+        	$lang = $form['field_imagen']['#language'];
+
+
+            $limit=0;
+        switch($form['field_paquete'][$lang]['#default_value'][0]){
+        case("13"):
+            $form['field_imagen'][$lang]['#file_upload_description']="En su paquete Basico,  <strong>solo las primeras 5 imagenes seran visibles en la presentacion de su empresa</strong>.<br />Files must be less than <strong>2 MB</strong>.<br />Allowed file types: <strong>png gif jpg jpeg</strong>.";
+            $limit = 5;
+            break;
+        case("15"):
+            $form['field_imagen'][$lang]['#file_upload_description']="En su paquete Silver,  <strong>solo las primeras 10 imagenes seran visibles en la presentacion de su empresa</strong>.<br />Files must be less than <strong>2 MB</strong>.<br />Allowed file types: <strong>png gif jpg jpeg</strong>.";
+            $limit=10;
+            break;
+        case("16"):
+            $form['field_imagen'][$lang]['#file_upload_description']="En su paquete Gold,  <strong>solo las primeras 20 imagenes seran visibles en la presentacion de su empresa</strong>.<br />Files must be less than <strong>2 MB</strong>.<br />Allowed file types: <strong>png gif jpg jpeg</strong>.";
+            break;
+        }
+
+        /* for($limit=10;$limit <= 20;$limit++){ */
+        /*     $form['field_imagen'][$lang][$limit]['#access'] = FALSE; */
+        /* } */
+        
+
+
+}
+
+    
+      
+        dpm($form);
+
+
+}
