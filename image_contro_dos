@@ -1,0 +1,40 @@
+<?php
+/*Implementacion hook_form_alter*/
+function guia_form_alter(&$form, &$form_state, $form_id) {
+    if($form_id=='empresa_node_form'){
+        dpm($form);
+        echo count($form['field_imagen']['und']);
+
+        $lang = $form['field_imagen']['#language'];        
+        $field_name = 'field_imagen';
+        $field = field_info_field($field_name);
+
+
+
+        if($form['field_paquete'][$lang]['#default_value'][0]==13 && $form['field_imagen'][$lang]['#file_upload_delta']>=5){
+            
+            for($i=5;$i<=$form['field_imagen'][$lang]['#file_upload_delta'];$i++){
+            
+                $form['field_imagen'][$lang][$i]['#access'] = FALSE;
+            }           
+
+        }
+
+        if($form['field_paquete'][$lang]['#default_value'][0]==15 && $form['field_imagen'][$lang]['#file_upload_delta']>=10){
+            
+            for($i=10;$i<=$form['field_imagen'][$lang]['#file_upload_delta'];$i++){
+            
+                $form['field_imagen'][$lang][$i]['#access'] = FALSE;
+            }  
+        }
+
+        if($form['field_paquete'][$lang]['#default_value'][0]==16 && $form['field_imagen'][$lang]['#file_upload_delta']>=20){
+            
+            for($i=20;$i<=$form['field_imagen'][$lang]['#file_upload_delta'];$i++){
+            
+                $form['field_imagen'][$lang][$i]['#access'] = FALSE;
+            }  
+        }
+        
+    }
+}
